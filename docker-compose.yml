@@ -1,0 +1,46 @@
+networks:
+  it_tickets_network:
+    driver: bridge
+
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./:/var/www
+      - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
+    ports:
+      - "8876:80"
+    depends_on:
+      - app
+    networks:
+      - it_tickets_network
+
+  app:
+    container_name: it-tickets-app
+    build:
+      context: .
+      dockerfile: _docker/app/Dockerfile
+    volumes:
+      - ./:/var/www           # синхронизация проекта с хостом
+      - ./_docker/app/entrypoint.sh:/usr/local/bin/entrypoint.sh
+    depends_on:
+      - db
+    networks:
+      - it_tickets_network
+
+  db:
+    image: postgres:18
+    restart: always
+#    environment:
+#      POSTGRES_DB: it_tickets
+#      POSTGRES_USER: root
+#      POSTGRES_PASSWORD: ""
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    networks:
+      - it_tickets_network
+
+volumes:
+  pgdata:
