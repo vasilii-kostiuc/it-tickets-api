@@ -27,18 +27,25 @@ services:
       - db
     networks:
       - it_tickets_network
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: it_tickets
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
 
   db:
     image: postgres:18
     restart: always
-#    environment:
-#      POSTGRES_DB: it_tickets
-#      POSTGRES_USER: root
-#      POSTGRES_PASSWORD: ""
+    environment:
+      POSTGRES_DB: it_tickets
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql
+      - ./pgdata:/var/lib/postgresql
     networks:
       - it_tickets_network
 

@@ -12,23 +12,12 @@ if [ ! -f vendor/autoload.php ]; then
     composer install --no-interaction --prefer-dist --optimize-autoloader
 fi
 
-until mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" --password="$DB_PASSWORD" \
-       --ssl=0 -e "SELECT 1;" &> /dev/null
-do
-  echo "Ожидание запуска MySQL..."
-  echo "$DB_HOST : $DB_PORT : $DB_USERNAME : $DB_PASSWORD"
+echo "Ожидание готовности PostgreSQL ($DB_HOST:$DB_PORT)..."
+until PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -U "$DB_USERNAME" -p "$DB_PORT" -d "$DB_DATABASE" -c '\q' 2>/dev/null; do
+  echo "PostgreSQL еще не готов, жду..."
   sleep 2
 done
-
-# Как только сервер поднялся — проверяем базу
-if mysql -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" --password="$DB_PASSWORD" --ssl=0 \
-    -e "SHOW DATABASES LIKE '$MYSQL_DATABASE';" | grep -q "$MYSQL_DATABASE"; then
-  echo "База данных $MYSQL_DATABASE найдена и доступна!"
-else
-  echo "База данных $MYSQL_DATABASE не существует!"
-fi
-
-echo "MySQL готов и база $MYSQL_DATABASE доступна!"
+echo "PostgreSQL доступен!"
 
 
 echo "Запускаю миграции..."
