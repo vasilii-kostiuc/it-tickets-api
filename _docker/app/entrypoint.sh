@@ -12,8 +12,8 @@ if [ ! -f vendor/autoload.php ]; then
     composer install --no-interaction --prefer-dist --optimize-autoloader
 fi
 
-echo "Ожидание готовности PostgreSQL ($DB_HOST:$DB_PORT)..."
-until PGPASSWORD="$DB_PASSWORD" psql -h "$DB_HOST" -U "$DB_USERNAME" -p "$DB_PORT" -d "$DB_DATABASE" -c '\q' 2>/dev/null; do
+echo "Ожидание готовности PostgreSQL ($PGSQL_DB_HOST:$PGSQL_DB_PORT)..."
+until PGPASSWORD="$PGSQL_DB_PASSWORD" psql -h "$PGSQL_DB_HOST" -U "$PGSQL_DB_USERNAME" -p "$PGSQL_DB_PORT" -d "$PGSQL_DB_DATABASE" -c '\q' 2>/dev/null; do
   echo "PostgreSQL еще не готов, жду..."
   sleep 2
 done
