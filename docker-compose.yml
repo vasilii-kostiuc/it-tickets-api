@@ -28,12 +28,12 @@ services:
     networks:
       - it_tickets_network
     environment:
-      DB_CONNECTION: pgsql
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_DATABASE: it_tickets
-      DB_USERNAME: postgres
-      DB_PASSWORD: postgres
+      PGSQL_DB_CONNECTION: pgsql
+      PGSQL_DB_HOST: db
+      PGSQL_DB_PORT: 5432
+      PGSQL_DB_DATABASE: it_tickets
+      PGSQL_DB_USERNAME: postgres
+      PGSQL_DB_PASSWORD: postgres
 
   db:
     image: postgres:18
