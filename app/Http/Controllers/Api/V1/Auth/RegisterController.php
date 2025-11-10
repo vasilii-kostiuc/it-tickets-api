@@ -10,7 +10,6 @@ use App\Http\Resources\Auth\RegisterResponseResource;
 
 class RegisterController extends Controller
 {
-
     private UserService $userService;
 
     public function __construct(UserService $userService)
