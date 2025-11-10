@@ -17,6 +17,7 @@ class RegisterController extends Controller
         $this->userService = $userService;
     }
 
+
     public function __invoke(RegisterUserRequest $request)
     {
         $user = $this->userService->register($request->get('email'),$request->get('password'), $request->get('name'), );
