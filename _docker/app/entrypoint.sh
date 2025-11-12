@@ -21,7 +21,7 @@ echo "PostgreSQL доступен!"
 
 
 echo "Запускаю миграции..."
-php artisan migrate
+php artisan migrate --force
 
 echo "Запуск основного процесса..."
-exec "$@"
+exec php-fpm -F

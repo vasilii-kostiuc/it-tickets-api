@@ -20,5 +20,4 @@ ENV PATH="$PATH:/root/.composer/vendor/bin"
 
 WORKDIR /var/www
 
-ENTRYPOINT ["entrypoint.sh"]
-CMD ["php-fpm"]
+ENTRYPOINT ["bash", "-c", "chmod +x /usr/local/bin/entrypoint.sh && /usr/local/bin/entrypoint.sh"]
