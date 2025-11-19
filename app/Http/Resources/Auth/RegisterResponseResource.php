@@ -17,7 +17,7 @@ class RegisterResponseResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'token' => $this->token,
+            'access_token' => $this->token,
             'user' => $this->user,
         ];
     }

@@ -22,6 +22,7 @@ class LoginController extends Controller
 
     public function __invoke(LoginUserRequest $request)
     {
+        sleep(2);
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {

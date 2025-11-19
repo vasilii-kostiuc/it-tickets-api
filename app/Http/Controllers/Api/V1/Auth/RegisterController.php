@@ -19,6 +19,7 @@ class RegisterController extends Controller
 
     public function __invoke(RegisterUserRequest $request)
     {
+        sleep(2);
         $user = $this->userService->register($request->get('email'),$request->get('password'), $request->get('name'), );
         $device = $request->userAgent() ?? '';
 

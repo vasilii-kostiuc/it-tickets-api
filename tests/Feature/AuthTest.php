@@ -14,7 +14,7 @@ test('auth register', function () {
     ]);
 
     \Pest\Laravel\assertDatabaseHas('users', ['email' => 'valid@email.com', 'name' => 'Valid name']);
-    $response->assertStatus(200)->assertJsonStructure(['data' => ['token', 'user']]);
+    $response->assertStatus(200)->assertJsonStructure(['data' => ['access_token', 'user']]);
 });
 
 
@@ -28,6 +28,6 @@ test('auth login', function () {
         'password' => '12345678',
     ]);
 
-    $response->assertStatus(200)->assertJsonStructure(['data' => ['token', 'user']]);
+    $response->assertStatus(200)->assertJsonStructure(['data' => ['access_token', 'user']]);
 
 });
