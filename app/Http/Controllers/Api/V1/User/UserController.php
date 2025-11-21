@@ -2,25 +2,48 @@
 
 namespace App\Http\Controllers\Api\V1\User;
 
+use App\Domain\User\Models\User;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ApiResponseResource;
+use App\Http\Resources\User\UserResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the users.
+     *
+     * @route GET /api/v1/users
      */
-    public function index()
+    public function index(Request $request): JsonResponse
     {
-        //
-    }
+        $users = QueryBuilder::for(User::class)
+            ->allowedFilters([
+                AllowedFilter::partial('name'),
+                AllowedFilter::partial('email'),
+                AllowedFilter::exact('id'),
+                AllowedFilter::callback('search', function ($query, $value) {
+                    $query->where(function ($q) use ($value) {
+                        $q->where('name', 'LIKE', "%{$value}%")
+                            ->orWhere('email', 'LIKE', "%{$value}%");
+                    });
+                }),
+            ])
+            ->allowedSorts([
+                'name',
+                'email',
+                'created_at',
+            ])
+            ->defaultSort('-created_at')
+            ->paginate($request->input('per_page', 15));
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $users->getCollection()->transform(fn($user) => new UserResource($user));
+
+        return ApiResponseResource::paginated($users, 'Users retrieved successfully');
+
     }
 
     /**
@@ -35,14 +58,6 @@ class UserController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
     {
         //
     }

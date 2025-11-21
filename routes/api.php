@@ -13,6 +13,6 @@ Route::prefix('v1')->group(function () {
     Route::post('auth/login', \App\Http\Controllers\Api\V1\Auth\LoginController::class);
 
     Route::middleware(['auth:sanctum'])->group(function () {
-
+        Route::apiResource('users', \App\Http\Controllers\Api\V1\User\UserController::class);
     });
 });
