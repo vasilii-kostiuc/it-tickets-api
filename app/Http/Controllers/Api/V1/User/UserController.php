@@ -20,6 +20,7 @@ class UserController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        sleep(2);
         $users = QueryBuilder::for(User::class)
             ->allowedFilters([
                 AllowedFilter::partial('name'),
