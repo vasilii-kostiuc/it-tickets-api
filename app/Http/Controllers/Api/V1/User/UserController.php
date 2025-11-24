@@ -39,7 +39,7 @@ class UserController extends Controller
                 'created_at',
             ])
             ->defaultSort('-created_at')
-            ->paginate($request->input('per_page', 15));
+            ->paginate($request->input('per_page', 10));
 
         $users->getCollection()->transform(fn($user) => new UserResource($user));
 

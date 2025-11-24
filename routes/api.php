@@ -14,5 +14,8 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::apiResource('users', \App\Http\Controllers\Api\V1\User\UserController::class);
+        Route::apiResource('permissions', \App\Http\Controllers\Api\V1\Rbac\PermissionController::class);
     });
+
+
 });
