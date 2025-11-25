@@ -190,15 +190,14 @@ describe('Permission Destroy', function () {
 
 describe('Permission Authorization', function () {
     test('unauthenticated user cannot access permissions', function () {
-        auth()->logout();
-
+        $this->actingAsGuest();
         $response = $this->getJson('/api/v1/permissions');
 
         $response->assertStatus(401);
     });
 
     test('unauthenticated user cannot create permission', function () {
-        auth()->logout();
+        $this->actingAsGuest();
 
         $response = $this->postJson('/api/v1/permissions', [
             'name' => 'users.view'
@@ -209,7 +208,7 @@ describe('Permission Authorization', function () {
 
     test('unauthenticated user cannot update permission', function () {
         $permission = Permission::create(['name' => 'users.view']);
-        auth()->logout();
+        $this->actingAsGuest();
 
         $response = $this->putJson("/api/v1/permissions/{$permission->id}", [
             'name' => 'users.edit'
@@ -220,7 +219,7 @@ describe('Permission Authorization', function () {
 
     test('unauthenticated user cannot delete permission', function () {
         $permission = Permission::create(['name' => 'users.view']);
-        auth()->logout();
+        $this->actingAsGuest();
 
         $response = $this->deleteJson("/api/v1/permissions/{$permission->id}");
 
