@@ -25,16 +25,15 @@ class PermissionController extends Controller
 
     public function index(Request $request)
     {
-
         $models = QueryBuilder::for(Permission::class)
             ->allowedFilters([
                 AllowedFilter::partial('name'),
-                AllowedFilter::partial('email'),
+                AllowedFilter::partial('display_name'),
                 AllowedFilter::exact('id'),
                 AllowedFilter::callback('search', function ($query, $value) {
                     $query->where(function ($q) use ($value) {
                         $q->where('name', 'LIKE', "%{$value}%")
-                            ->orWhere('email', 'LIKE', "%{$value}%");
+                            ->orWhere('display_name', 'LIKE', "%{$value}%");
                     });
                 }),
             ])

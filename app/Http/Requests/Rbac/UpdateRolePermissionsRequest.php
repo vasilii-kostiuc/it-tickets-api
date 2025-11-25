@@ -9,7 +9,8 @@ class UpdateRolePermissionsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "permissions" => "array|min:0"
+            "permissions" => "array|min:0|exists:permissions,id",
+            "permissions.*" => "integer",
         ];
     }
 }

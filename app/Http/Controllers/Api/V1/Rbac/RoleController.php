@@ -1,15 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Rbac;
+namespace App\Http\Controllers\Api\V1\Rbac;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rbac\StoreRoleRequest;
 use App\Http\Requests\Rbac\UpdateRolePermissionsRequest;
 use App\Http\Requests\Rbac\UpdateRoleRequest;
-use App\Services\Rbac\RoleService;
-use App\Models\Rbac\Permission;
-use App\Models\Rbac\Role;
-use Illuminate\Http\RedirectResponse;
+use App\Domain\Rbac\Services\RoleService;
+use App\Domain\Rbac\Models\Role;
+use App\Http\Resources\ApiResponseResource;
+use App\Http\Resources\Rbac\RoleResource;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Spatie\Permission\Guard;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class RoleController extends Controller
 {
@@ -20,117 +25,81 @@ class RoleController extends Controller
         $this->roleService = $roleService;
     }
 
-    public function index()
+    public function index(Request $request): JsonResponse
     {
-        if (!auth()?->user()?->can('roles.view')) {
-            return response()->redirectToRoute('dashboard');
-        }
+        $models = QueryBuilder::for(Role::class)
+            ->allowedFilters([
+                AllowedFilter::partial('name'),
+                AllowedFilter::partial('description'),
+                AllowedFilter::exact('id'),
+                AllowedFilter::callback('search', function ($query, $value) {
+                    $query->where(function ($q) use ($value) {
+                        $q->where('name', 'LIKE', "%{$value}%")
+                            ->orWhere('description', 'LIKE', "%{$value}%");
+                    });
+                }),
+            ])
+            ->allowedSorts([
+                'name',
+                'description',
+                'created_at',
+            ])
+            ->defaultSort('name')
+            ->paginate($request->input('per_page', 10));
 
-        return view('list', [
-            'title' => __("Roles"),
-            'attributes' => ['name' => "Role name", 'description' => 'Description'],
-            'models' => Role::all(),
-        ]);
-    }
+        $models->getCollection()->transform(fn($model) => new RoleResource($model));
 
-    public function create()
-    {
-        if (!auth()?->user()?->can('roles.create')) {
-            return response()->redirectToRoute('dashboard');
-        }
-
-        $permissions = Permission::all();
-        return view('rbac.roles.create', compact('permissions'));
+        return ApiResponseResource::paginated($models);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRoleRequest $request): RedirectResponse
+    public function store(StoreRoleRequest $request): JsonResponse
     {
-        if (!auth()?->user()?->can('roles.create')) {
-            return response()->redirectToRoute('dashboard');
-        }
-
         $attributes = $request->safe()->except('permissions');
         $permissions = ($request->safe(['permissions'])['permissions']) ?? [];
 
-        $this->roleService->create($attributes, $permissions);
+        $role = $this->roleService->create($attributes, $permissions);
 
-        return redirect()
-            ->route("roles.index")
-            ->with("status-success", "Role created");
+        return ApiResponseResource::success(new RoleResource($role));
     }
 
-    public function show(Role $role)
+    public function show(Role $role): JsonResponse
     {
-        if (!auth()?->user()?->can('roles.view')) {
-            return response()->redirectToRoute('dashboard');
-        }
-
-        $permissions = Permission::all();
-        $disabled = true;
-
-        return view('rbac.roles.edit', compact('role', 'permissions', 'disabled'));
+        return ApiResponseResource::success(new RoleResource($role));
     }
 
-    public function edit(Role $role)
+    public function update(UpdateRoleRequest $request, Role $role): JsonResponse
     {
-        if (!auth()?->user()?->can('roles.update')) {
-            return response()->redirectToRoute('dashboard');
-        }
-
-        $permissions = Permission::all();
-        $disabled = false;
-        return view('rbac.roles.edit', compact('role', 'permissions', 'disabled'));
-    }
-
-    public function update(UpdateRoleRequest $request, Role $role): RedirectResponse
-    {
-        if (!auth()?->user()?->can('roles.update')) {
-            return response()->redirectToRoute('dashboard');
-        }
-
         $this->roleService->update($role, $request->validated());
 
-        return redirect()
-            ->route("roles.index")
-            ->with("status-success", "Role updated");
+        return ApiResponseResource::success(new RoleResource($role));
     }
 
-    public function updateRolePermissions(UpdateRolePermissionsRequest $request, Role $role): RedirectResponse
-    {
-        if (!auth()?->user()?->can('roles.update')) {
-            return response()->redirectToRoute('dashboard');
-        }
 
+    public function destroy(Role $role): JsonResponse
+    {
+        //  dd( $role->attributes['guard_name'] ?? config('auth.defaults.guard'));
+        //$model= getModelForGuard($role->attributes['guard_name'] ?? config('auth.defaults.guard'));
+        //dd(config("auth.guards.sanctum.provider"));
+
+        $this->roleService->remove($role);
+
+        return ApiResponseResource::success(null);
+    }
+
+    public function updatePermissions(UpdateRolePermissionsRequest $request, Role $role): JsonResponse
+    {
         $permissions = [];
-        $permissionsRequest = ($request->safe(['permissions'])['permissions']) ?? [];
+        $permissionsRequest = $request->validated('permissions') ?? [];
         foreach ($permissionsRequest as $permission) {
             $permissions[] = (int)$permission;
         }
 
         $this->roleService->updateRolePermissions($role, $permissions);
 
-        return redirect()->route("roles.index")->with("status-success", "Role permissions updated");
+        return ApiResponseResource::success(new RoleResource($role));
     }
 
-    public function destroy(Role $role): RedirectResponse
-    {
-        try {
-            if (!auth()?->user()?->can('roles.delete')) {
-                return response()->redirectToRoute('dashboard');
-            }
-
-            $this->roleService->remove($role);
-        } catch (\Exception $ex) {
-            return redirect()
-                ->route("roles.index")
-                ->with("status-error", __($ex->getMessage()));
-        }
-
-        return redirect()
-            ->route("roles.index")
-            ->with("status-success", "Role deleted");
-    }
 }

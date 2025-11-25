@@ -9,7 +9,7 @@ class UpdateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required",
+            "name" => "required|string|max:255|unique:roles,name,{$this->route('role')->id}",
             "description" => ['nullable', 'string', 'max:255'],
         ];
     }

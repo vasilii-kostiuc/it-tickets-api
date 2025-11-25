@@ -2,7 +2,7 @@
 
 namespace App\Domain\Rbac\Services;
 
-use App\Models\Rbac\Role;
+use App\Domain\Rbac\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
