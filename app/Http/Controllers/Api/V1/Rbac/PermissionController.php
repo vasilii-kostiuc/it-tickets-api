@@ -93,4 +93,15 @@ class PermissionController extends Controller
 
         return ApiResponseResource::success(null, 'Permission deleted successfully');
     }
+
+    public function batchDelete(Request $request){
+        $validated = $request->validate([
+            'ids' => 'required|array|min:1|max:100', // Ограничение
+            'ids.*' => 'integer|exists:permissions,id'
+        ]);
+
+        $this->permissionService->massRemove( $validated['ids']);
+
+        return ApiResponseResource::success();
+    }
 }

@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        sleep(2);
+        //sleep(1);
         $users = QueryBuilder::for(User::class)
             ->allowedFilters([
                 AllowedFilter::partial('name'),
@@ -38,7 +38,7 @@ class UserController extends Controller
                 'email',
                 'created_at',
             ])
-            ->defaultSort('-created_at')
+            ->defaultSort('id')
             ->paginate($request->input('per_page', 10));
 
         $users->getCollection()->transform(fn($user) => new UserResource($user));
@@ -58,9 +58,9 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        //
+        return ApiResponseResource::success(new UserResource($user));
     }
 
     /**
@@ -74,8 +74,20 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return ApiResponseResource::success();
+    }
+
+    public function batchDelete(Request $request)
+    {
+        $validated = $request->validate([
+            'ids' => 'required|array',
+        ]);
+
+        User::destroy($validated['ids']);
+
+        return ApiResponseResource::success();
     }
 }

@@ -14,7 +14,11 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::apiResource('users', \App\Http\Controllers\Api\V1\User\UserController::class);
+
+        Route::delete('permissions/batch-delete', [\App\Http\Controllers\Api\V1\Rbac\PermissionController::class, 'batchDelete']);
         Route::apiResource('permissions', \App\Http\Controllers\Api\V1\Rbac\PermissionController::class);
+
+        Route::delete('roles/batch-delete', [\App\Http\Controllers\Api\V1\Rbac\RoleController::class, 'batchDelete']);
         Route::apiResource('roles', \App\Http\Controllers\Api\V1\Rbac\RoleController::class);
         Route::put('roles/{role}/permissions', [\App\Http\Controllers\Api\V1\Rbac\RoleController::class, 'updatePermissions']);
     });

@@ -11,7 +11,7 @@ class PermissionFactory extends Factory
 
     public function definition(): array
     {
-        $entity = $this->faker->randomAscii();
+        $entity = fake()->unique()->word();
         $action = $this->faker->randomElement(['view', 'create', 'edit', 'delete']);
 
         return [

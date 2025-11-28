@@ -102,4 +102,15 @@ class RoleController extends Controller
         return ApiResponseResource::success(new RoleResource($role));
     }
 
+    public function batchDelete(Request $request){
+        $validated = $request->validate([
+            'ids' => 'required|array|min:1|max:100', // Ограничение
+            'ids.*' => 'integer|exists:permissions,id'
+        ]);
+
+        $this->roleService->massRemove( $validated['ids']);
+
+        return ApiResponseResource::success();
+    }
+
 }

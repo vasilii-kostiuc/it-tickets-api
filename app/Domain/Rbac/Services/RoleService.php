@@ -2,6 +2,7 @@
 
 namespace App\Domain\Rbac\Services;
 
+use App\Domain\Rbac\Models\Permission;
 use App\Domain\Rbac\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +31,17 @@ class RoleService
 
         return $role->delete();
     }
+
+    public function massRemove(array $roleIds): bool
+    {
+        foreach ($roleIds as $roleId) {
+            $role = Role::findById($roleId);
+            $this->remove($role);
+        }
+
+        return true;
+    }
+
 
     public function updateRolePermissions(Role $role, $permissions): Role
     {

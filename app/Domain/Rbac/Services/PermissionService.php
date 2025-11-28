@@ -22,4 +22,9 @@ class PermissionService
     {
         return $permission->delete();
     }
+
+    public function massRemove(array $permissionIds): bool
+    {
+        return Permission::destroy($permissionIds);
+    }
 }
