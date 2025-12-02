@@ -3,7 +3,12 @@ FROM php:8.4-fpm
 # Устанавливаем зависимости и расширения для PostgreSQL
 RUN apt-get update && apt-get install -y \
     git curl unzip libpq-dev libonig-dev libpng-dev libxml2-dev zip \
-    && docker-php-ext-install pdo pdo_pgsql pgsql mbstring bcmath gd
+    libjpeg62-turbo-dev libfreetype6-dev \
+    && docker-php-ext-install pdo pdo_pgsql pgsql mbstring bcmath
+
+# Устанавливаем GD с поддержкой JPEG и FreeType
+RUN docker-php-ext-configure gd --with-jpeg --with-freetype \
+    && docker-php-ext-install gd
 
 RUN mkdir -p /var/www/storage /var/www/bootstrap/cache \
     && chown -R www-data:www-data /var/www \

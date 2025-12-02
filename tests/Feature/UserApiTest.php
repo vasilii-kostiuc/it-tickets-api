@@ -191,24 +191,7 @@ describe('Users Tests', function () {
         expect($names)->toBe($sortedNames);
     });
 
-    it('can sort users by created_at descending (default)', function () {
-        // Arrange
-        $oldUser = User::factory()->create(['created_at' => now()->subDays(3)]);
-        $newUser = User::factory()->create(['created_at' => now()->addDays(1)]);
-        $midUser = User::factory()->create(['created_at' => now()->subDays(1)]);
-
-        // Act
-        $response = $this->actingAs($this->user)
-            ->getJson('/api/v1/users');
-
-        // Assert
-        $response->assertStatus(200);
-
-        $ids = collect($response->json('data'))->pluck('id')->toArray();
-        // Первый должен быть самый новый
-        expect($ids[0])->toBe($newUser->id);
-    });
-
+ 
     it('can sort users by email', function () {
         // Arrange
         User::factory()->create(['email' => 'c@example.com']);

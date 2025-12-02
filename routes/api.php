@@ -13,6 +13,9 @@ Route::prefix('v1')->group(function () {
     Route::post('auth/login', \App\Http\Controllers\Api\V1\Auth\LoginController::class);
 
     Route::middleware(['auth:sanctum'])->group(function () {
+        Route::get('profile', [\App\Http\Controllers\Api\V1\Auth\ProfileController::class, 'show'])->name('profile.show');
+        Route::post('profile', [\App\Http\Controllers\Api\V1\Auth\ProfileController::class, 'update'])->name('profile.update');
+
         Route::apiResource('users', \App\Http\Controllers\Api\V1\User\UserController::class);
 
         Route::delete('permissions/batch-delete', [\App\Http\Controllers\Api\V1\Rbac\PermissionController::class, 'batchDelete']);

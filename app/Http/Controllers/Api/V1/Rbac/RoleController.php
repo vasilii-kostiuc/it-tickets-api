@@ -73,6 +73,7 @@ class RoleController extends Controller
     public function update(UpdateRoleRequest $request, Role $role): JsonResponse
     {
         $this->roleService->update($role, $request->validated());
+        $this->roleService->updateRolePermissions($role, $request->validated('permissions') ?? []);
 
         return ApiResponseResource::success(new RoleResource($role));
     }
