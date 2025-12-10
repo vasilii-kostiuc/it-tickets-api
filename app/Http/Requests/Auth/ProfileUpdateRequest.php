@@ -15,8 +15,8 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'name' => ['string', 'max:255'],
-            'email' => ['string', 'email', 'max:255', 'unique:users,email'],
-            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,', 'max:200048'],
+            'email' => ['string', 'email', 'max:255', 'unique:users,email,'.$this->user()->id],
+            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,', 'max:200000000048'],
         ];
     }
 }

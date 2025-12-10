@@ -35,6 +35,7 @@ class UserService
 
     public function updateProfile(Authenticatable $user, array $attributes): User
     {
+        info(__DIR__ . ' ' . json_encode($attributes));
         if (isset($attributes['email'])) {
             $user->email = $attributes['email'];
         }

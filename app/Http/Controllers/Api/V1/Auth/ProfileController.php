@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ProfileUpdateRequest;
+use App\Http\Resources\ApiResponseResource;
 use App\Http\Resources\Auth\ProfileResource;
 use App\Domain\User\Services\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 //use OpenApi\Attributes as OA;
 
@@ -19,17 +21,18 @@ class ProfileController extends Controller
         $this->userService = $userService;
     }
 
-    public function show(): ProfileResource
+    public function show(): \Illuminate\Http\JsonResponse
     {
         $user = Auth::user();
 
-        return new ProfileResource($user);
+        return ApiResponseResource::success(new ProfileResource($user));
     }
 
-    public function update(ProfileUpdateRequest $request): ProfileResource
+    public function update(ProfileUpdateRequest $request): JsonResponse
     {
-        $user = $this->userService->updateProfile(Auth::user(), $request->validated());
+        info( json_encode($request->keys()));
+        $user = $this->userService->updateProfile(Auth::user(), $request->safe()->all());
 
-        return new ProfileResource($user);
+        return ApiResponseResource::success(new ProfileResource($user));
     }
 }

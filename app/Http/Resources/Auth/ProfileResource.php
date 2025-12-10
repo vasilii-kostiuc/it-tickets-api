@@ -55,7 +55,7 @@ class ProfileResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'avatar' => env('APP_URL').$this->avatar,
+            'avatar' => $this->avatar ? asset('storage/' . $this->avatar) : null,
         ];
     }
 }
