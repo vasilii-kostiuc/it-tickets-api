@@ -58,4 +58,9 @@ class UserService
 
         return $user;
     }
+
+    public function getUserByExtension(string $extension): User|null
+    {
+        return User::where('phone_ext', '=', $extension)->first();
+    }
 }

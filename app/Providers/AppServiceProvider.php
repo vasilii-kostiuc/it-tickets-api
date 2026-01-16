@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Domain\Call\PhoneFormatters\PhoneFormatterInterface;
+use App\Domain\Call\PhoneFormatters\RawPhoneFormatter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(PhoneFormatterInterface::class, RawPhoneFormatter::class);
     }
 
     /**

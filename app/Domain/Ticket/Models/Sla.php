@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Domain\Client\Models;
+namespace App\Domain\Ticket\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model
+class Sla extends Model
 {
-    /** @use HasFactory<\Database\Factories\ClientFactory> */
+    /** @use HasFactory<\Database\Factories\SlaFactory> */
     use HasFactory;
 }

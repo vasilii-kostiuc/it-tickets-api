@@ -1,13 +1,13 @@
 <?php
 
-namespace Database\Factories\Domain\Ticket\Models;
+namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\Ticket\Models\TicketStatus>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Domain\Call\Models\Call>
  */
-class TicketStatusFactory extends Factory
+class CallFactory extends Factory
 {
     /**
      * Define the model's default state.
