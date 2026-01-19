@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Domain\Settings;
-
-use App\Domain\Settings\SettingsRepositoryInterface;
+namespace App\Domain\Utils\Settings;
 
 class InMemorySettingsRepository implements SettingsRepositoryInterface
 {

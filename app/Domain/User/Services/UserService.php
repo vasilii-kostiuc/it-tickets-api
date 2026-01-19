@@ -4,12 +4,12 @@ namespace App\Domain\User\Services;
 
 
 use App\Domain\User\Models\User;
+use App\Domain\Utils\Image\ImageUploader;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use App\Domain\Utils\ImageUploader;
 
 class UserService
 {
@@ -59,7 +59,7 @@ class UserService
         return $user;
     }
 
-    public function getUserByExtension(string $extension): User|null
+    public function getOperatorByExtension(string $extension): User|null
     {
         return User::where('phone_ext', '=', $extension)->first();
     }

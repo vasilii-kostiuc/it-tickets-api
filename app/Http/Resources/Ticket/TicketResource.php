@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Http\Resources\User;
+namespace App\Http\Resources\Ticket;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class TicketResource
 {
     public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
+            'user_id' => $this->user->id,
+            'client_id' => $this->client->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

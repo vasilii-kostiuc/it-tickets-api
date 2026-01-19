@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Settings;
+namespace App\Domain\Utils\Settings;
 
 interface SettingsRepositoryInterface
 {
