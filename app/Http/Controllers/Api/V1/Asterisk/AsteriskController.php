@@ -10,6 +10,7 @@ use App\Domain\User\Services\UserService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Asterisk\AsteriskCallRequest;
 use App\Http\Resources\ApiResponseResource;
+use App\Http\Resources\Ticket\TicketResource;
 
 class AsteriskController extends Controller
 {
@@ -36,8 +37,8 @@ class AsteriskController extends Controller
 
         $data = $request->safe()->all();
 
-        $ticket = $ticketService->createTicket($client, $user, $data);
+        $ticket = $this->ticketService->createTicket($client, $user, $data);
 
-        return ApiResponseResource::success()
+        return ApiResponseResource::success(TicketResource::make($ticket), 'Ticket created successfully');
     }
 }
