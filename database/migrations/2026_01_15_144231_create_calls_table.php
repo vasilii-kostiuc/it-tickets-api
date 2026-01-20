@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(\App\Domain\Ticket\Models\Ticket::class);
             $table->foreignIdFor(\App\Domain\Client\Models\Client::class);
-            $table->enum('type', CallType::cases());
+            $table->string('type');
             $table->string('lang')->default('ro');
             $table->foreignIdFor(\App\Domain\User\Models\User::class);
             $table->string('extension')->unique();

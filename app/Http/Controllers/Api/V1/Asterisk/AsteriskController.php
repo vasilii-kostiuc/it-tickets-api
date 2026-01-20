@@ -39,6 +39,6 @@ class AsteriskController extends Controller
 
         $ticket = $this->ticketService->createTicket($client, $user, $data);
 
-        return ApiResponseResource::success(TicketResource::make($ticket), 'Ticket created successfully');
+        return ApiResponseResource::success(new TicketResource($ticket), 'Ticket created successfully');
     }
 }
