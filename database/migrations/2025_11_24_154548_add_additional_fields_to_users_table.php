@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('phone', 32)->nullable()->after('name');
-            $table->string('phone_ext', 32)->nullable();
+            $table->string('extension', 32)->nullable();
             $table->string('mobile', 32)->nullable();
             $table->string('lang', 16)->nullable();
             $table->string('timezone', 256)->nullable();
@@ -38,19 +38,39 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn([
-                'phone',
-                'phone_ext',
-                'mobile',
-                'lang',
-                'timezone',
-                'locale',
-                'is_active',
-                'is_admin',
-                'is_visible',
-                'on_vocation',
-                'last_login_at',
-            ]);
+            if (Schema::hasColumn('users', 'phone')) {
+                $table->dropColumn('phone');
+            }
+            if (Schema::hasColumn('users', 'extension')) {
+                $table->dropColumn('extension');
+            }
+            if (Schema::hasColumn('users', 'mobile')) {
+                $table->dropColumn('mobile');
+            }
+            if (Schema::hasColumn('users', 'lang')) {
+                $table->dropColumn('lang');
+            }
+            if (Schema::hasColumn('users', 'timezone')) {
+                $table->dropColumn('timezone');
+            }
+            if (Schema::hasColumn('users', 'locale')) {
+                $table->dropColumn('locale');
+            }
+            if (Schema::hasColumn('users', 'is_active')) {
+                $table->dropColumn('is_active');
+            }
+            if (Schema::hasColumn('users', 'is_admin')) {
+                $table->dropColumn('is_admin');
+            }
+            if (Schema::hasColumn('users', 'is_visible')) {
+                $table->dropColumn('is_visible');
+            }
+            if (Schema::hasColumn('users', 'on_vocation')) {
+                $table->dropColumn('on_vocation');
+            }
+            if (Schema::hasColumn('users', 'last_login_at')) {
+                $table->dropColumn('last_login_at');
+            }
         });
     }
 };

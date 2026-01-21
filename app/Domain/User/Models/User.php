@@ -25,6 +25,17 @@ class User extends Authenticatable
         'email',
         'password',
         'avatar',
+        'phone',
+        'extension',
+        'mobile',
+        'lang',
+        'timezone',
+        'locale',
+        'is_active',
+        'is_admin',
+        'is_visible',
+        'on_vocation',
+        'last_login_at',
     ];
 
     /**
@@ -46,7 +57,11 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'is_active' => 'boolean',
+            'is_admin' => 'boolean',
+            'is_visible' => 'boolean',
+            'on_vocation' => 'boolean',
+            'last_login_at' => 'datetime',
         ];
     }
 

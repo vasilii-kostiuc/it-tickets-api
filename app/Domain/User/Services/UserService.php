@@ -61,6 +61,6 @@ class UserService
 
     public function getOperatorByExtension(string $extension): User|null
     {
-        return User::where('phone_ext', '=', $extension)->first();
+        return User::where('extension', '=', $extension)->first();
     }
 }

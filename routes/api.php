@@ -26,5 +26,8 @@ Route::prefix('v1')->group(function () {
         Route::put('roles/{role}/permissions', [\App\Http\Controllers\Api\V1\Rbac\RoleController::class, 'updatePermissions']);
     });
 
-
+    // Asterisk API (protected by API token)
+    Route::prefix('asterisk')->middleware('api.token')->group(function () {
+        Route::post('call', [\App\Http\Controllers\Api\V1\Asterisk\AsteriskController::class, 'call']);
+    });
 });
