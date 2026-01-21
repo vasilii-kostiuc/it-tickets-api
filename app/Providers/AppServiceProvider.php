@@ -6,6 +6,8 @@ use App\Domain\Call\PhoneFormatters\PhoneFormatterInterface;
 use App\Domain\Call\PhoneFormatters\RawPhoneFormatter;
 use App\Domain\Client\Repositories\ClientRepository;
 use App\Domain\Client\Repositories\ClientRepositoryInterface;
+use App\Domain\Ticket\Services\SlaCalculators\DefaultSlaCalculator;
+use App\Domain\Ticket\Services\SlaCalculators\SlaCalculatorInterface;
 use App\Domain\Utils\Settings\InMemorySettingsRepository;
 use App\Domain\Utils\Settings\SettingsRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -20,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PhoneFormatterInterface::class, RawPhoneFormatter::class);
         $this->app->bind(ClientRepositoryInterface::class, ClientRepository::class);
         $this->app->bind(SettingsRepositoryInterface::class, InmemorySettingsRepository::class);
+        
+        // SLA Calculator - можно легко заменить на другую стратегию
+        $this->app->bind(SlaCalculatorInterface::class, DefaultSlaCalculator::class);
     }
 
     /**
@@ -30,3 +35,4 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 }
+
