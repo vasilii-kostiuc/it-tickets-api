@@ -3,8 +3,12 @@
 namespace App\Domain\Call\Models;
 
 use App\Domain\Call\Enums\CallType;
+use App\Domain\Client\Models\Client;
+use App\Domain\Ticket\Models\Ticket;
+use App\Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Call extends Model
 {
@@ -37,5 +41,22 @@ class Call extends Model
             'redirected' => 'boolean',
             'deleted' => 'boolean',
         ];
+    }
+
+    // Relations
+
+    public function ticket(): BelongsTo
+    {
+        return $this->belongsTo(Ticket::class);
+    }
+
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Client::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
