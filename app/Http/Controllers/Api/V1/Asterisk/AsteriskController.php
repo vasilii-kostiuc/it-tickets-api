@@ -59,7 +59,7 @@ class AsteriskController extends Controller
 
         $ticket = $this->ticketService->createTicket($ticketCreateData);
 
-        $callData = CallData::fromTicket($ticket, CallType::In, $extension, $lang);
+        $callData = CallData::fromTicket($ticket, CallType::In, $extension, null, $lang);
 
         $this->callService->createCall($callData);
 

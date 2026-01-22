@@ -16,9 +16,9 @@ return new class extends Migration
     {
         Schema::table('tickets', function (Blueprint $table) {
             $table->string('ticket_number')->unique();
-            $table->foreignIdFor(\App\Domain\Ticket\Models\TicketStatus::class);
-            $table->foreignIdFor(Department::class);
-            $table->foreignIdFor(Sla::class);
+            $table->foreignIdFor(\App\Domain\Ticket\Models\TicketStatus::class)->nullable();
+            $table->foreignIdFor(Department::class)->nullable();
+            $table->foreignIdFor(Sla::class)->nullable();
             $table->foreignIdFor(\App\Domain\Ticket\Models\Category::class)->nullable();
             $table->string('source')->default(TicketSource::Other->value);
 

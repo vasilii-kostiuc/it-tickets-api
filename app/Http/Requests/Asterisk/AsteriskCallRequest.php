@@ -9,10 +9,16 @@ class AsteriskCallRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ext' => ['required', 'string'],
+            'extension' => ['required', 'string'],
             'phone' => 'required|string',
-            'lang' => 'default:ro',
-            'codId' => 'default:',
+            'lang' => ['nullable', 'string'],
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'lang' => $this->input('lang', 'ro'),
+        ]);
     }
 }

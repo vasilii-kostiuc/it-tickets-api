@@ -21,18 +21,33 @@ class ClientService
             return $this->clientRepository->getClientByPhone($phone);
         }
 
-        $client = $this->clientRepository->create(array_merge([
+        $data = array_merge([
             'phone' => $phone,
-        ], $data));
+        ], $data);
 
-        return $client;
-    }
-    
+        $data = $this->prepareClientData($data);
 
-    public function createNewClient(array $data): Client
-    {
         $client = $this->clientRepository->create($data);
 
         return $client;
+    }
+
+
+    public function createNewClient(array $data): Client
+    {
+        $data = $this->prepareClientData($data);
+
+        $client = $this->clientRepository->create($data);
+
+        return $client;
+    }
+
+    private function prepareClientData(array $data): array
+    {
+        if(empty($data['name']) && isset($data['phone'])){
+            $data['name'] =  "Client {$data['phone']}";
+        }
+
+        return $data;
     }
 }

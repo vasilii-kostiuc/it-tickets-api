@@ -13,7 +13,7 @@ readonly class TicketCreateData
         public int          $clientId,
         public int          $userId,
         public TicketSource $source,
-        public int          $ticketStatusId,
+        public ?int          $ticketStatusId,
         public ?int         $departmentId = null,
         public ?int         $categoryId = null,
         public ?int         $slaId = null,

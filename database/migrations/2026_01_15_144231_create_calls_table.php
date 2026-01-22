@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('type');
             $table->string('lang')->default('ro');
             $table->foreignIdFor(\App\Domain\User\Models\User::class);
-            $table->string('extension')->unique();
-            $table->string('unique_id')->unique();
+            $table->string('extension');
+            $table->string('unique_id')->unique()->nullable();
             $table->dateTime('started');
             $table->dateTime('ended')->nullable();
             $table->string('duration')->nullable();
