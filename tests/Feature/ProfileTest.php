@@ -10,7 +10,7 @@ test('can get profile', function () {
 
     $user = \App\Domain\User\Models\User::factory()->create();
 
-    $response = $this->actingAs($user)->getJson('/api/v1/profile');
+    $response = $this->actingAs($user)->getJson('/api/v1/auth/profile');
 
     $response->assertStatus(200)->assertJsonStructure(['data' => ['id', 'name', 'email', 'avatar']]);
 
@@ -19,7 +19,7 @@ test('can get profile', function () {
 test('can update profile', function () {
     $user = \App\Domain\User\Models\User::factory()->create();
 
-    $response = $this->actingAs($user)->post('/api/v1/profile', [
+    $response = $this->actingAs($user)->post('/api/v1/auth/profile', [
         'name' => 'test',
         'email' => 'test@test.com',
     ]);
@@ -33,7 +33,7 @@ test('can upload avatar', function () {
     $user = \App\Domain\User\Models\User::factory()->create();
     $avatar = UploadedFile::fake()->image('test-avatar.jpg');
 
-    $response = $this->actingAs($user)->postJson('/api/v1/profile', [
+    $response = $this->actingAs($user)->postJson('/api/v1/auth/profile', [
         'avatar' => $avatar
     ]);
     $response->assertStatus(200);
