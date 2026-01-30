@@ -4,7 +4,7 @@ FROM php:8.4-fpm
 RUN apt-get update && apt-get install -y \
     git curl unzip libpq-dev libonig-dev libpng-dev libxml2-dev zip \
     libjpeg62-turbo-dev libfreetype6-dev \
-    && docker-php-ext-install pdo pdo_pgsql pgsql mbstring bcmath
+    && docker-php-ext-install pdo pdo_pgsql pgsql mbstring bcmath pcntl
 
 # Устанавливаем GD с поддержкой JPEG и FreeType
 RUN docker-php-ext-configure gd --with-jpeg --with-freetype \
