@@ -10,6 +10,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class TicketMessage extends Model implements HasMedia
 {
+    public const TICKET_MESSAGE_ATTACHMENTS_COLLECTION = 'ticket_message_attachments';
+
     use InteractsWithMedia;
 
     protected $fillable = [
@@ -33,7 +35,8 @@ class TicketMessage extends Model implements HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('attachments')
-            ->useDisk('public');
+        $this->
+            addMediaCollection(self::TICKET_MESSAGE_ATTACHMENTS_COLLECTION)
+                ->useDisk('public');
     }
 }
