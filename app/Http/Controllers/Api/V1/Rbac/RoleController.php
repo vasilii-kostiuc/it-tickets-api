@@ -60,6 +60,8 @@ class RoleController extends Controller
         $attributes = $request->safe()->except('permissions');
         $permissions = ($request->safe(['permissions'])['permissions']) ?? [];
 
+        info( __METHOD__ . ' permissions : ' . json_encode($permissions));
+
         $role = $this->roleService->create($attributes, $permissions);
 
         return ApiResponseResource::success(new RoleResource($role));
@@ -73,7 +75,15 @@ class RoleController extends Controller
     public function update(UpdateRoleRequest $request, Role $role): JsonResponse
     {
         $this->roleService->update($role, $request->validated());
-        $this->roleService->updateRolePermissions($role, $request->validated('permissions') ?? []);
+
+        $permissions = [];
+
+        $permissionsRequest = $request->validated('permissions') ?? [];
+        foreach ($permissionsRequest as $permission) {
+            $permissions[] = (int)$permission;
+        }
+
+        $this->roleService->updateRolePermissions($role, $permissions);
 
         return ApiResponseResource::success(new RoleResource($role));
     }

@@ -11,6 +11,8 @@ class UpdateRoleRequest extends FormRequest
         return [
             "name" => "required|string|max:255|unique:roles,name,{$this->route('role')->id}",
             "description" => ['nullable', 'string', 'max:255'],
+            "permissions" => "array|min:0",
+            "permissions.*" => "integer",
         ];
     }
 }
