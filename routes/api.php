@@ -18,6 +18,14 @@ Route::prefix('v1')->group(function () {
 
         Route::apiResource('users', \App\Http\Controllers\Api\V1\User\UserController::class);
 
+        Route::apiResource('clients', \App\Http\Controllers\Api\V1\Client\ClientController::class);
+
+        Route::apiResource('slas', \App\Http\Controllers\Api\V1\Sla\SlaController::class);
+
+        Route::post('departments/{department}/users', [\App\Http\Controllers\Api\V1\Department\DepartmentController::class, 'addUser']);
+        Route::delete('departments/{department}/users/{user}', [\App\Http\Controllers\Api\V1\Department\DepartmentController::class, 'removeUser']);
+        Route::apiResource('departments', \App\Http\Controllers\Api\V1\Department\DepartmentController::class);
+
         Route::delete('permissions/batch-delete', [\App\Http\Controllers\Api\V1\Rbac\PermissionController::class, 'batchDelete']);
         Route::apiResource('permissions', \App\Http\Controllers\Api\V1\Rbac\PermissionController::class);
 

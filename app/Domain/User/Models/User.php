@@ -3,10 +3,12 @@
 namespace App\Domain\User\Models;
 
 use App\Domain\Call\Models\Call;
+use App\Domain\Department\Models\Department;
 use App\Domain\Ticket\Models\Ticket;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -79,9 +81,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Ticket::class);
     }
-
     public function calls(): HasMany
     {
         return $this->hasMany(Call::class);
+    }
+    public function departments(): BelongsToMany
+    {
+        return $this->belongsToMany(Department::class);
     }
 }

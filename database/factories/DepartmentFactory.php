@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Domain\Department\Models\Department;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class DepartmentFactory extends Factory
 {
+    protected $model = Department::class;
     /**
      * Define the model's default state.
      *
@@ -17,7 +19,12 @@ class DepartmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->randomAscii(),
+            'name'       => $this->faker->unique()->company(),
+            'ext_mask'   => $this->faker->numerify('1##'),
+            'queue1'     => $this->faker->numerify('queue-###'),
+            'queue2'     => $this->faker->numerify('queue-###'),
+            'manager_id' => \App\Domain\User\Models\User::factory(),
+            'sla_id'     => null,
         ];
     }
 }
