@@ -53,7 +53,7 @@ class Ticket extends Model
     }
 
     // Relations
-    
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -82,5 +82,10 @@ class Ticket extends Model
     public function sla(): BelongsTo
     {
         return $this->belongsTo(Sla::class);
+    }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(TicketMessage::class);
     }
 }
