@@ -6,20 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('ticket_messages', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(\App\Domain\Ticket\Models\Ticket::class);
+            $table->string('author_type');
+            $table->integer('author_id')->nullable();
+            $table->text('body');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('ticket_messages');
